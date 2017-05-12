@@ -560,6 +560,16 @@ var numToText = function(str) {
 
 // 36. Return the number of times a tag occurs in the DOM.
 var tagCount = function(tag, node) {
+	let i = Array.from(arguments) [2] || 0;
+	let count = Array.from(arguments) [3] || 0;
+	node = document.all;
+	if (node.length === i) {
+		return count;
+	}
+	if (node[i].tagName.toLowerCase() === tag) {
+		++count
+	}
+	return tagCount(tag, node, ++i, count);
 };
 
 // 37. Write a function for binary search.
@@ -567,10 +577,42 @@ var tagCount = function(tag, node) {
 // console.log(binarySearch(5)) will return '5'
 
 var binarySearch = function(array, target, min, max) {
+
+	min = min || 0,
+	max = max || array.length - 1;
+	let mid = Math.floor((min + max) / 2);
+	if (array[mid] === target) {
+		return mid;
+	}
+	if (min === max) {
+		return null;
+	}
+	if (target > array[mid]) {
+		min = mid + 1;
+		return binarySearch(array, target, min, max)
+	} else {
+		max = mid;
+		return binarySearch(array, target, min, max)
+	}
+
 };
 
 // 38. Write a merge sort function.
 // Sample array:  [34,7,23,32,5,62]
 // Sample output: [5,7,23,32,34,62]
 var mergeSort = function(array) {
+	let smallest = Infinity;
+	let copy = Array.from(arguments) [1] || array.slice();
+	let result = Array.from(arguments) [2] || [];
+	if (result.length === array.length) {
+		return result;
+	}
+	for (let i = 0; i < copy.length; i++) {
+		if (copy[i] < smallest) {
+			smallest = copy[i];
+		}
+	}
+	result.push(smallest);
+	copy.splice(copy.indexOf(smallest), 1);
+	return mergeSort(array, copy, result);
 };
